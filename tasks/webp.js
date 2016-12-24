@@ -88,6 +88,7 @@ module.exports = function(grunt) {
     }
     var source_total = 0;
     var dest_total = 0;
+    var oversize_total = 0;
 
     // Iterate over all src-dest file pairs.
     async.eachSeries(this.files, function(f, next) {
@@ -318,6 +319,7 @@ module.exports = function(grunt) {
             diff = Number((diff).toFixed(2));
             source_total += source;
             if (diff < 0) {
+                oversize_total++;
                 source_total += source;
                 diff = diff * -1;
                 if (options.deleteLarger) {
@@ -351,6 +353,14 @@ module.exports = function(grunt) {
         grunt.log.subhead('Operation statistics:');
         grunt.log.oklns(source_total + ' -> ' + dest_total);
         grunt.log.oklns(total_diff_perentage +'% saved.');
+        if (oversize_total !== 0) {
+            if (options.deleteLarger) {
+                grunt.log.oklns('Deleted ' + oversize_total + ' file(s) due to larger output.');
+            }
+            else {
+                grunt.log.oklns('Warning: ' + 'Contains ' + oversize_total + ' file(s) larger than their sources.');
+            }
+        }
         done();
     });
 
