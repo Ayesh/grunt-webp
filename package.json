@@ -1,8 +1,8 @@
 {
   "name": "grunt-webp",
   "description": "Convert images to WebP format.",
-  "version": "0.1.0",
-  "homepage": "https://github.com/somerandomdude/grunt-webp",
+  "version": "0.1.2",
+  "homepage": "https://github.com/Ayesh/grunt-webp",
   "author": {
     "name": "P.J. Onori",
     "email": "pj@somerandomdude.com",

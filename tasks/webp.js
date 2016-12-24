@@ -326,7 +326,7 @@ module.exports = function(grunt) {
                 }
                 else {
                     dest_total += dest;
-                    grunt.log.writeln('Warning: '['yellow'] + diff + '% larger than its source.');
+                    grunt.log.writeln('Warning: '['yellow'] + diff + '% larger than its source. Left undeleted.');
                 }
             }
             else {
