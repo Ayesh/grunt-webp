@@ -3,6 +3,8 @@ grunt-webp
 
 Convert your images to [WebP](https://developers.google.com/speed/webp/) format. This is a fork of [somerandomdude/grunt-webp](https://github.com/somerandomdude/grunt-webp), but with both backwards compatible and incompatible changes. 
 
+![Console output](http://i.giphy.com/l0HlJGqrjflJRQO9W.gif "Description goes here")
+
 ## Getting Started
 
 To install this plugin, open up the terminal, `cd` to your project's root directory and run the following command:
