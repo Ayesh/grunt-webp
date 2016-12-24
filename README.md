@@ -3,7 +3,7 @@ grunt-webp
 
 Convert your images to [WebP](https://developers.google.com/speed/webp/) format. This is a fork of [somerandomdude/grunt-webp](https://github.com/somerandomdude/grunt-webp), but with both backwards compatible and incompatible changes. 
 
-![Console output](http://i.giphy.com/l0HlJGqrjflJRQO9W.gif "Description goes here")
+![Console output](https://media.giphy.com/media/l0HlJGqrjflJRQO9W/source.gif "Console output.")
 
 ## Getting Started
 
