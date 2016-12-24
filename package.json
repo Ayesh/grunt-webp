@@ -33,10 +33,10 @@
   },
   "devDependencies": {
     "grunt-contrib-clean": "~0.5.0",
-    "grunt": ">=1.0.1"
+    "grunt": ">=0.4.2"
   },
   "peerDependencies": {
-    "grunt": ">=1.0.1"
+    "grunt": ">=0.4.2"
   },
   "keywords": [
     "gruntplugin",
