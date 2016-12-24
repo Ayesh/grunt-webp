@@ -72,6 +72,7 @@ Experimental Options:
 module.exports = function(grunt) {
   var path = require('path');
   var async = require('async');
+  var fs = require('fs');
   grunt.registerMultiTask('webp', 'WebP image format converter.', function() {
     /**
      * Retrieves defined options.
@@ -85,6 +86,8 @@ module.exports = function(grunt) {
     if (options.binpath) {
       cwebp = options.binpath;
     }
+    var source_total = 0;
+    var dest_total = 0;
 
     // Iterate over all src-dest file pairs.
     async.eachSeries(this.files, function(f, next) {
@@ -283,6 +286,13 @@ module.exports = function(grunt) {
         args.push('-v');
       }
 
+        /**
+         * Outputs the rules that have been matched.
+         */
+        if (options.quiet) {
+            args.push('-quiet');
+        }
+
       args.push(f.src);
       args.push('-o');
       args.push(f.dest);
@@ -290,15 +300,40 @@ module.exports = function(grunt) {
       /**
        * Outputs the file that is being analysed.
        */
-      grunt.log.writeln(cwebp + ' ' + args.join(' ') );
+      grunt.log.subhead('Compressing: ' + f.dest);
+      //grunt.log.writeln(cwebp + ' ' + args.join(' ') );
 
       var child = grunt.util.spawn({
         cmd: cwebp,
         args: args
       }, function(error, result, code) {
-        grunt.log.writeln(code+''+result);
+        //grunt.log.writeln(code+''+result);
         if (code !== 0) {
           return grunt.warn(String(code));
+        }
+        else{
+            var source = fs.statSync(f.src[0])['size'];
+            var dest = fs.statSync(f.dest)['size'];
+            var diff = ((source - dest) / source) * 100;
+            diff = Number((diff).toFixed(2));
+            source_total += source;
+            if (diff < 0) {
+                source_total += source;
+                diff = diff * -1;
+                if (options.deleteLarger) {
+                    grunt.file.delete(f.dest);
+                    grunt.log.writeln('Deleted: '['yellow'] + diff + '% larger than its source.');
+                }
+                else {
+                    dest_total += dest;
+                    grunt.log.writeln('Warning: '['yellow'] + diff + '% larger than its source.');
+                }
+            }
+            else {
+
+                dest_total += dest;
+                grunt.log.oklns('Done: '['green'] + diff + '% smaller | ' + diff + '%: ' + source + ' -> ' + dest);
+            }
         }
 
         next(error);
@@ -309,7 +344,15 @@ module.exports = function(grunt) {
        */
       child.stdout.pipe(process.stdout);
       child.stderr.pipe(process.stderr);
-    }.bind(this), this.async());
+
+    }.bind(this), function() {
+        var total_diff = (source_total - dest_total) / source_total;
+        var total_diff_perentage = Number((total_diff * 100).toFixed(2));
+        grunt.log.subhead('Operation statistics:');
+        grunt.log.oklns(source_total + ' -> ' + dest_total);
+        grunt.log.oklns(total_diff_perentage +'% saved.');
+        done();
+    });
 
   });
 };
